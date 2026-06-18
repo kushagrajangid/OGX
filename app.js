@@ -1,7 +1,8 @@
+require('dotenv').config();
 const multer = require('multer');
 const path = require('path');
 const rootDir = __dirname;
-const db_path = "mongodb+srv://kushagrajangid2007:galaxy@cluster.r0lt7gy.mongodb.net/authentication?appName=cluster";
+const db_path = process.env.MONGODB_URI;
 const { default: mongoose } = require('mongoose');
 const express = require('express');
 const session = require('express-session');
@@ -11,9 +12,10 @@ const store = new MongoDBStore({
   uri: db_path,
   collection: 'sessions'
 });
+app.set('trust proxy', 1);
 app.use(
   session({
-    secret: 'mysecretkey',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store: store
@@ -26,8 +28,8 @@ app.use((req, res, next) => {
 });
 app.set('view engine','ejs');
 app.set('views','views');
-app.use(express.static('public'));
-const port = 2100;
+app.use(express.static(path.join(__dirname, 'public')));
+const port = process.env.PORT || 2100;
 const user = require('./routers/user.js');
 const authentication = require('./routers/authrouter.js');
 app.use(express.urlencoded({ extended: true }));
@@ -76,7 +78,7 @@ app.use((err, req, res, next) => {
  mongoose.connect(db_path).then(()=>{
     console.log("connected to mongo");   
     app.listen(port,()=>{
-      console.log(`server running on adress http://localhost:${port}`)
+      console.log(`Server running on port ${port}`)
     })
   }).catch(err=>{
     console.log('error while connecting with to mongo',err);
