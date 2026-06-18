@@ -67,17 +67,16 @@ app.use("/uploads",express.static(path.join(rootDir,'uploads')));
 app.use(multer(multeroption).array('image', 5));
 app.use(user);
 app.use(authentication);
+app.use((req, res) => {
+  res.status(404).render('error');
+});
 app.use((err, req, res, next) => {
     if (err.message === "Only image files are allowed") {
         return res.render('postadd', {
             error: err.message
         });
     }
-    if (err.status === 404) {
-    return res.status(404).render('error');
-  }
-
-  // fallback for all other errors
+    // fallback for all other errors
   res.status(500).render('error');
 });
  mongoose.connect(db_path).then(()=>{
