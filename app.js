@@ -73,7 +73,12 @@ app.use((err, req, res, next) => {
             error: err.message
         });
     }
-    next(err); // pass other errors to Express
+    if (err.status === 404) {
+    return res.status(404).render('error');
+  }
+
+  // fallback for all other errors
+  res.status(500).render('error');
 });
  mongoose.connect(db_path).then(()=>{
     console.log("connected to mongo");   

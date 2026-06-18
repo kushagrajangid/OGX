@@ -5,9 +5,8 @@
     OGX
   </a>
 
-  <!-- Buttons -->
-  <div class="flex items-center gap-2">
-
+  <!-- Desktop Menu -->
+  <div class="hidden md:flex items-center gap-2">
     <% if(isLoggedIn){ %>
     <a href="/myadds" class="flex items-center gap-1.5 px-4 py-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-900 transition-colors duration-150">
       My Ads
@@ -29,6 +28,37 @@
       Logout
     </a>
     <% } %>
-
   </div>
+
+  <!-- Mobile Hamburger -->
+  <button id="menuBtn" class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition">
+    <svg id="menuIcon" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-700" fill="none"
+      viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  </button>
+
 </nav>
+
+<!-- Mobile Menu -->
+<div id="mobileMenu" class="hidden md:hidden bg-white border border-gray-200 rounded-xl mt-1 px-4 py-3 flex-col gap-1">
+  <% if(isLoggedIn){ %>
+  <a href="/myadds" class="block px-4 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-100 transition">My Ads</a>
+  <a href="/postadd" class="block px-4 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-100 transition">Post an Ad</a>
+  <a href="/favouriteslist" class="block px-4 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-100 transition">❤️ Favourites</a>
+  <% } %>
+  <% if(!isLoggedIn){ %>
+  <a href="/login" class="block px-4 py-2 text-sm font-medium text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-100 transition">Login</a>
+  <% }else{ %>
+  <a href="/logout" class="block px-4 py-2 text-sm font-medium text-gray-800 border border-gray-300 rounded-lg hover:bg-gray-100 transition">Logout</a>
+  <% } %>
+</div>
+
+<script>
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  menuBtn.addEventListener('click', () => {
+    mobileMenu.classList.toggle('hidden');
+    mobileMenu.classList.toggle('flex');
+  });
+</script>
