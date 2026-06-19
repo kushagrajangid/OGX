@@ -75,7 +75,9 @@
                  transition-all duration-150">
           Create an account
         </a>
-        
+            <% if(error){ %>
+  <p class="text-sm text-red-500 mt-2"><%= error %></p>
+              <% } %>
       </form>
     </div>
 

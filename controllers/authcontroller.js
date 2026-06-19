@@ -1,4 +1,5 @@
 const User = require('../models/userdata');
+const transporter = require('../transporter');
 exports.logincontroller = (req,res) =>{
   res.render('login');
 }
@@ -25,11 +26,25 @@ exports.postlogincontroller = async (req,res) =>{
     })
   
   }
-
-  req.session.isLoggedIn = true;
+  const otp = Math.floor(100000 + Math.random() * 900000);
+  req.session.otp = otp;
   req.session.userid = user._id.toString();
   req.session.username = user.name;
-  res.redirect('/');
+  try {
+  await transporter.sendMail({
+    from: process.env.EMAIL_USER,
+    to: user.email,
+    subject: 'Login OTP',
+    text: `Your OTP is ${otp}`
+  });
+
+  return res.redirect('/otpverification');
+} catch(err) {
+  console.log(err);
+  return res.render('login',{
+    error : 'Unable to send OTP'
+  });
+}
 }
 exports.postregistercontroller = (req,res) =>{
   console.log("this is register body",req.body);
@@ -48,4 +63,18 @@ exports.postregistercontroller = (req,res) =>{
     error: errorMessage
   });
 });
+}
+exports.verificationcontroller =  (req,res) =>{
+  res.render('verification');
+}
+exports.verify = (req,res)=>{
+  const otp = req.body.otp;
+  const OTP = req.session.otp;
+  if(Number(otp)===OTP){
+    delete req.session.otp;
+    req.session.isLoggedIn = true;
+  return  res.redirect('/');
+  }else{
+   return res.render("verification",{error : "enter wrong otp"});
+  }
 }

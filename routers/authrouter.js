@@ -6,4 +6,6 @@ authrouter.post('/postlogin',authcontroller.postlogincontroller);
 authrouter.get('/register',authcontroller.registercontroller);
 authrouter.post('/postregister',authcontroller.postregistercontroller);
 authrouter.get("/logout",authcontroller.logoutcontroller)
+authrouter.get("/otpverification",authcontroller.verificationcontroller);
+authrouter.post("/verify",authcontroller.verify);
 module.exports = authrouter;

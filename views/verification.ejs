@@ -1,0 +1,30 @@
+<%- include('./partials/head') %>
+<body class="min-h-screen bg-gray-100 flex items-center justify-center">
+
+  <div class="bg-white p-10 rounded-2xl shadow text-center">
+    <h2 class="text-lg font-medium text-gray-800 mb-2">Enter OTP</h2>
+    <p class="text-sm text-gray-400 mb-6">Enter the 6-digit code sent to you.</p>
+
+    <form action="/verify" method="POST">
+      <input
+        type="text"
+        name="otp"
+        maxlength="6"
+        inputmode="numeric"
+        placeholder="000000"
+        class="w-48 h-12 text-center text-2xl tracking-widest border border-gray-300 rounded-xl outline-none focus:border-gray-500"
+      />
+
+      <% if(error){ %>
+        <p class="text-sm text-red-500 mt-2"><%= error %></p>
+      <% } %>
+
+      <br/>
+      <button type="submit" class="mt-5 px-8 py-2 bg-gray-900 text-white rounded-xl text-sm">
+        Submit
+      </button>
+    </form>
+  </div>
+
+</body>
+</html>
