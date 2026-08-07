@@ -1,8 +1,8 @@
-require('dotenv').config();
+// require('dotenv').config();
 const multer = require('multer');
 const path = require('path');
 const rootDir = __dirname;
-const db_path = process.env.MONGODB_URI;
+const db_path ="mongodb+srv://kushagrajangid2007:kush@cluster.r0lt7gy.mongodb.net/authentication";
 const { default: mongoose } = require('mongoose');
 const express = require('express');
 const session = require('express-session');
@@ -15,15 +15,17 @@ const store = new MongoDBStore({
 app.set('trust proxy', 1);
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: 'mysecretkey',
     resave: false,
     saveUninitialized: false,
     store: store
   })
 );
 app.use((req, res, next) => {
-  res.locals.isLoggedIn = req.session.isLoggedIn;
+  res.locals.isLoggedIn = req.session.isLoggedIn || false;
   res.locals.username = req.session.username;
+  res.locals.islogout = !req.session.isLoggedIn;
+  res.locals.theme = req.session.theme || "dark";
   next();
 });
 app.set('view engine','ejs');
@@ -82,7 +84,7 @@ app.use((err, req, res, next) => {
  mongoose.connect(db_path).then(()=>{
     console.log("connected to mongo");   
     app.listen(port,()=>{
-      console.log(`Server running on port ${port}`)
+      console.log(`Server running on port http://localhost:${port}`)
     })
   }).catch(err=>{
     console.log('error while connecting with to mongo',err);

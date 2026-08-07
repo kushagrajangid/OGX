@@ -1,7 +1,8 @@
 const User = require('../models/userdata');
 const transporter = require('../transporter');
 exports.logincontroller = (req,res) =>{
-  res.render('login');
+  res.render("login",{
+      error : ""});
 }
 exports.logoutcontroller = (req, res) => {
   req.session.destroy((err) => {
@@ -32,12 +33,19 @@ exports.postlogincontroller = async (req,res) =>{
   req.session.username = user.name;
   try {
   await transporter.sendMail({
-    from: process.env.EMAIL_USER,
-    to: user.email,
-    subject: 'Login OTP',
-    text: `Your OTP is ${otp}`
-  });
+  from: 'kushagra.jangid.2007@gmail.com',
+  to: user.email,
+  subject: 'Your OTP Code',
+  text: `Hi,
 
+Your OTP code is: ${otp}
+
+If you did not request this, please ignore this email.
+
+regards,
+OGX Team`
+});
+req.session.isotpgenerate = true;
   return res.redirect('/otpverification');
 } catch(err) {
   console.log(err);
@@ -65,13 +73,23 @@ exports.postregistercontroller = (req,res) =>{
 });
 }
 exports.verificationcontroller =  (req,res) =>{
-  res.render('verification');
+  console.log("now i am in otp verification ")
+  const isotpgenerate = req.session.isotpgenerate;
+  if(isotpgenerate){
+  res.render('verification',{error : ""});
+  }else if(req.session.isLoggedIn){
+    res.redirect('/');
+  }
+  else{
+    res.redirect('/login');
+  }
 }
 exports.verify = (req,res)=>{
   const otp = req.body.otp;
   const OTP = req.session.otp;
   if(Number(otp)===OTP){
     delete req.session.otp;
+    delete req.session.isotpgenerate;
     req.session.isLoggedIn = true;
   return  res.redirect('/');
   }else{

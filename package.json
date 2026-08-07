@@ -9,7 +9,7 @@
   "scripts": {
     "tailwind": "tailwindcss -i ./views/input.css -o ./public/output.css",
     "build": "npm run tailwind",
-    "start": "node app.js"
+    "start": "nodemon app.js"
   },
   "devDependencies": {
     "autoprefixer": "^10.5.0",

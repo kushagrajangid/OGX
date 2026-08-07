@@ -2,6 +2,7 @@ const Add = require('../models/addvertisment');
 const User = require('../models/userdata')
 const favourite = require('../models/favourite');
 exports.usercontroller = async (req,res)=>{
+  const login = req.session.isLoggedIn;
   const add = await Add.find();
   res.render('home',{ads:add,favourites:favourite});
 }
@@ -104,4 +105,22 @@ exports.deletefavourite = async (req,res) =>{
   console.log("this is deleting favourite id ",favid);
  await favourite.deleteOne({favid,userid});
   res.redirect('/favouriteslist')
+}
+exports.categoriescontroller = async (req,res) =>{
+  const categories = req.params.name;
+  const homes = await Add.find({adType : categories});
+  res.render('home',{ads:homes,favourites:""});
+}
+exports.themechanger = (req,res) =>{
+  req.session.theme = req.session.theme === 'dark' ? 'white' : 'dark';
+  res.redirect('/');
+}
+exports.searchoperation = async (req,res) =>{
+  const searchtxt = req.query.q;
+  console.log(searchtxt);
+  const ad =await Add.find({itemName: {
+    $regex: searchtxt,
+    $options: 'i'
+  }});
+   res.render('home',{ads:ad,favourites:""});
 }

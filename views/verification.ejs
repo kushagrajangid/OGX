@@ -1,6 +1,7 @@
 <%- include('./partials/head') %>
-<body class="min-h-screen bg-gray-100 flex items-center justify-center">
+<body class="min-h-screen flex flex-col" style="margin:0; padding:0;">
 
+<%- include('./partials/waves') %>
   <div class="bg-white p-10 rounded-2xl shadow text-center">
     <h2 class="text-lg font-medium text-gray-800 mb-2">Enter OTP</h2>
     <p class="text-sm text-gray-400 mb-6">Enter the 6-digit code sent to you.</p>
@@ -20,9 +21,9 @@
       <% } %>
 
       <br/>
-      <button type="submit" class="mt-5 px-8 py-2 bg-gray-900 text-white rounded-xl text-sm">
-        Submit
-      </button>
+      <button type="submit" style="background:black; color:white; padding: 8px 24px; border-radius: 12px; font-size:14px;">
+  Submit
+</button>
     </form>
   </div>
 

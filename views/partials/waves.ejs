@@ -1,0 +1,17 @@
+<div id="bg" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1;"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js"></script>
+<script>
+  VANTA.WAVES({
+    el: "#bg",
+    mouseControls: true,
+    touchControls: true,
+    gyroControls: false,
+    minHeight: 200.00,
+    minWidth: 200.00,
+    scale: 1.00,
+    scaleMobile: 1.00,
+    color: <%= theme === "white" ? "0xb6b6b6" : "0x0" %>
+  })
+</script>

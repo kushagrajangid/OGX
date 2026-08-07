@@ -10,4 +10,7 @@ user.post('/addelete/:id',usercontroller.deletecontroller);
 user.post('/favourite/add',usercontroller.addtofavourite);
 user.get('/favouriteslist',usercontroller.showfavourite);
 user.post('/favourite/remove',usercontroller.deletefavourite);
+user.get('/category/:name',usercontroller.categoriescontroller);
+user.post('/themechanger',usercontroller.themechanger);
+user.get('/search',usercontroller.searchoperation);
 module.exports = user;
